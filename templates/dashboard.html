@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="text-center mb-4">Welcome, {{ session.username }}!</h2>
+
+
+{% if budget_alerts %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Budget Alerts:</strong>
+        <ul>
+            {% for alert in budget_alerts %}
+                <li>{{ alert | replace('$', '₹') }}</li>
+            {% endfor %}
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+{% endif %}
+
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-center mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Income</h5>
+                <p class="card-text">₹{{ '%.2f' % income }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Expenses</h5>
+                <p class="card-text">₹{{ '%.2f' % expense }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Balance</h5>
+                <p class="card-text">₹{{ '%.2f' % balance }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <h4 class="text-center">Expense Distribution</h4>
+        <canvas id="expensePieChart"></canvas>
+    </div>
+    <div class="col-md-6">
+        <h4 class="text-center">Monthly Summary</h4>
+        <canvas id="monthlyBarChart"></canvas>
+    </div>
+</div>
+
+
+ 
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script>
+    const expenseData = {{ expense_by_category | tojson }};
+    drawPieChart(expenseData);
+    drawBarChart({{ income | tojson }}, {{ expense | tojson }});
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="text-center mb-4">Transactions</h2>
+
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h4>Add Transaction</h4>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            
+            <div class="mb-3">
+                {{ form.amount.label(class="form-label") }}
+                {{ form.amount(class="form-control") }}
+                <small class="text-muted">Enter positive for Income, negative for Expenses (e.g., -50 for ₹50 expense)</small>
+                {% for error in form.amount.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            
+            <div class="mb-3">
+                {{ form.category.label(class="form-label") }}
+                {{ form.category(class="form-control") }}
+                {% for error in form.category.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            
+            <div class="mb-3">
+                {{ form.date.label(class="form-label") }}
+                {{ form.date(class="form-control") }}
+                {% for error in form.date.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+           
+            <div class="mb-3">
+                {{ form.description.label(class="form-label") }}
+                {{ form.description(class="form-control") }}
+                {% for error in form.description.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            
+            <button type="submit" class="btn btn-primary w-100">Add Transaction</button>
+        </form>
+    </div>
+</div>
+
+
+<div class="row mt-4">
+    <div class="col-12">
+        <h4>Transaction History</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in transactions %}
+                    <tr>
+                        <td>{{ t.date }}</td>
+                        <td>₹{{ '%.2f' % t.amount }}</td>
+                        <td>{{ t.category }}</td>
+                        <td>{{ t.description }}</td>
+                        <td>{{ t.type.capitalize() }}</td>
+                        <td>
+                            <a href="{{ url_for('delete_transaction', id=t.id) }}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

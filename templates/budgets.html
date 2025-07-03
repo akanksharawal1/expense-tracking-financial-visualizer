@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="text-center mb-4">Manage Budgets</h2>
+
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h4>Set Budget</h4>
+        <form method="POST">
+            {{ form.hidden_tag() }}  
+
+            
+            <div class="mb-3">
+                {{ form.category.label(class="form-label") }}
+                {{ form.category(class="form-control") }}
+                {% for error in form.category.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            
+            <div class="mb-3">
+                {{ form.amount.label(class="form-label") }}
+                {{ form.amount(class="form-control") }}
+                {% for error in form.amount.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            
+            <div class="mb-3">
+                {{ form.month_year.label(class="form-label") }}
+                {{ form.month_year(class="form-control", placeholder="YYYY-MM") }}
+                {% for error in form.month_year.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            
+            <button type="submit" class="btn btn-primary w-100">Set Budget</button>
+        </form>
+    </div>
+</div>
+
+
+<div class="row mt-4">
+    <div class="col-12">
+        <h4>Your Budgets</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Month-Year</th>
+                    <th>Budget</th>
+                    <th>Spent</th>
+                    <th>Remaining</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for budget in budgets %}
+                    <tr>
+                        <td>{{ budget.category }}</td>
+                        <td>{{ budget.month_year }}</td>
+                        <td>₹{{ '%.2f' % budget.budget }}</td>
+                        <td>₹{{ '%.2f' % (budget.spent or 0) }}</td>
+                        <td>₹{{ '%.2f' % (budget.budget - (budget.spent or 0)) }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
