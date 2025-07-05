@@ -48,23 +48,26 @@ A full-stack personal finance tracker that allows users to log income and expens
    cd expense-tracking-financial-visualizer
 
 2. **Create and Activate Virtual Environment on Terminal**
-    # For Windows
-    python -m venv venv
-    venv\Scripts\activate
+    For Windows :-
+        python -m venv venv
+        venv\Scripts\activate
 
 3. **Install Dependencies**
     pip install -r requirements.txt
 
 4. **Create .env File**
-    Create a .env file in the root directory and add your credentials:
 
+
+    Create a `.env` file in the root directory and add your credentials like this:
+
+    ```env
     SECRET_KEY=your_secret_key
     DB_HOST=localhost
     DB_USER=root
     DB_PASSWORD=your_password
     DB_NAME=your_database_name
     DB_CHARSET=utf8mb4
-
+    ```
 
 5. **Run the App**
 
